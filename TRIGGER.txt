@@ -1,0 +1,57 @@
+Trigger 1
+
+Every time a new movie is entered to a database a trigger is created
+
+Create or replace trigger dbms_ins
+After insert on movie
+For each row 
+Declare 
+Name movie.movie_name%type;
+Begin
+Name := new.movie_name;
+dbms_output.put_line(‘New movie ‘ || Name || ‘ inserted!’);
+End if;
+End;
+/
+
+Trigger 2
+
+When a viewer ticket_status states NOT BOOKED do the necessary process and update the cancellation table
+
+Create table CANCEL(
+ CANCEL_id varchar(10) primary key,
+ VIEWER_ID  references VIEWER,                                                                                                                                        
+ TICKET_ID  references movie_ticket,                                                                                                                                               
+ TICKET_TYPE  references movie_ticket ,                                                                                                                                             
+ TICKET_COUNT references movie_ticket ,                                                                                                                                             
+ THEATRE_ID  references movie_ticket ,                                                                                                                                             
+ SCREEN_ID references movie_ticket
+)
+create or replace trigger cancellation_trigger
+after delete on movie_ticket
+referencing new as new old as old
+for each row
+begin
+insert into cancel values(:OLD.viewer_id,:OLD.ticket_id,:OLD.ticket_type,:OLD.ticket_count,:OLD.theatre_id,:OLD.screen_id);
+end;
+/
+
+Trigger 3
+
+Create a trigger to update a person's current age using the DOB column.
+
+Alter table viewer add DOB date;
+
+CREATE OR REPLACE TRIGGER update_age
+BEFORE INSERT OR UPDATE OF dob ON viewer
+FOR EACH ROW
+DECLARE
+v_newAge viewer.age%type;
+temp_dob viewer.dob%type;
+BEGIN
+temp_dob := :new.dob;
+v_newAge := ROUND((MONTHS_BETWEEN(sysdate,temp_dob)/12),2);
+:new.age := v_newAge;
+END update_age;
+/
+
