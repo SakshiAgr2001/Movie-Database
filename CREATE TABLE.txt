@@ -1,0 +1,67 @@
+## Create tables
+Create table Viewer(
+   Viewer_id varchar(20) constraint v_pk primary key,
+   F_name varchar(20) not null,
+   L_name varchar(20),
+   Age number(3) not null,
+   Phone number(10) not null,
+   Email varchar(20) not null,
+   Address varchar(20) not null
+  );
+create table Movie(
+   Movie_id  varchar(20) constraint m_pk primary key,
+   Movie_name varchar(20) not null,
+   Language varchar(20) not null,
+   Director  varchar(20),
+   Genre varchar(20),
+   Rating varchar(20),
+   Upcoming_movie varchar(20)
+   );
+create table Theatre(
+   Theatre_id varchar(20) constraint t_pk primary key,
+   Theatre_name varchar(20),
+   Theatre_address varchar(20)
+   );
+Create table Showtime(
+   Show_id varchar(20) constraint s_pk primary key,
+   Movie_id constraint mfk references Movie,
+   Movie_stime timestamp not null,
+   Movie_endtime timestamp not null
+ );
+Create table Screening(
+Screen_id varchar(20) constraint sc_pk primary key,
+Screen_no number(10) not null,
+Total_goldseats number(10) not null,
+G_left number(10) not null,
+Total_nlseats number(10) null,
+N_left  number(10) not null,                                
+Theatre_id constraint ts_fk references Theatre,
+Show_id constraint ss_fk  references Showtime
+  );
+Create table Seat(
+Seat_id  varchar(20) constraint se_pk primary key,
+Seat_no number(10) not null,
+Seat_type varchar(20) not null,
+Seat_status varchar(20) not null,
+Screen_id constraint sc_fk references Screening,
+Theatre_id constraint ths_fk references Theatre
+);
+create table Movie_ticket(
+  Viewer_id references Viewer,
+  Ticket_id varchar(10) constraint tic_pk primary key,
+  Ticket_count number(10),
+  Ticket_type varchar(20),
+  Ticket_price number(10),
+  Theatre_id references Theatre,
+  Screen_id references Screening
+);
+create table payment(
+  Payment_id  varchar(10) constraint p_pk primary key,
+  Amount number(20) not null,
+  Payment_type varchar(20) not null,
+  Receipt_id number(10) not null,
+  Ticket_id references Movie_Ticket,
+  Viewer_id references Viewer
+);
+ 
+
