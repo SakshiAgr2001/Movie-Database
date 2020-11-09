@@ -1,0 +1,25 @@
+
+## Formating the data in SQL
+set lines 256
+set trimout on
+set tab off
+set pagesize 100
+set colsep " | "
+
+column Viewer_id format a5
+column f_name format a5
+column l_name format a5
+column Payment_id format a5
+column Seat_id format a5
+column email format a15
+column Theatre_address format a10
+column Theatre_name format a10
+column Theatre_id format a5
+column MOVIE_NAME format a8
+column rating format a3
+column movie_id format a4
+column show_id format a5
+column  MOVIE_STIME  format a15
+column  MOVIE_ENDTIME format a15
+column screen_id format a7
+column  payment_type format a9
