@@ -1,0 +1,70 @@
+##Queries
+
+1.UPDATE
+
+The movies that are currently in the theatre need to be replaced by upcoming movies
+update movie set movie_name = upcoming_movie;
+
+Add viewer_rating user interactive updation
+update ratings set rating = 'rating ' where viewer_id = '&viewer_id' and movie_id =  '&movie_id' ;
+
+Add duration time for showtime table
+Update showtime set duration_movie=movie_stime-movie_endtime;
+alter table showtime add duration_movie interval day to second;
+
+Change the movie_name for a particular given movie_id
+update movie set movie_name=’Dogs’ where movie_id=’MOV3’;
+
+
+2.ALTER
+
+To validate email and phone number of the user
+Alter table Viewer
+Add constraint check_email check (email like '%_@__%.__%');
+Alter table Viewer
+Add constraint chk_phone check((REGEXP_LIKE(phone, '^0\d{9}|\d{10}$')));
+
+To ensure the user can only select between GOLD and Normal seat type
+Alter table Seat
+Add constraint type_chk check (seat_type in ('G','N'));
+
+To ensure the user can pay by CASH or CARD
+Alter table Payment
+Add constraint pay_chk check(Payment_type in ('CASH','CARD',''));
+Alter table movie_ticket add seat_number number(10);
+
+
+
+3.SELCT
+
+Display the table contents of the table movie_ticket
+Select * movie_ticket;
+
+Display the movie name, genre, movie id and language of all the movies that have a rating greater than 3 
+Select movie_id, movie_name, genre, language from movie where rating>3;
+
+Select * from VIEWER email like '%_@%._%';
+
+4.DELETE
+
+Delete user details where ticket status is NOT BOOKED
+delete from movie_ticket where ticket_status = 'NOT BOOKED';
+
+Delete theatre details as it shutdown 
+delete from theatre where theatre_id = 'T004';
+
+Delete movie that are no longer displaying
+DELETE FROM movie WHERE movie_id IN ('MOV7','MOV8');
+
+Delete all movies that have Action as the genre.
+delete from movie where genre = 'Action;
+
+
+NVL function
+Select MOVIE_NAME, LANGUAGE,GENRE,nvl(rating,’0’) from MOVIE;
+
+NULLIF function
+Display viewer information where the phone number is not null
+Select f_name,nullif(to_char(phone),' ') as Phone from viewer where phone is not null;
+
+
