@@ -1,0 +1,55 @@
+##Query -2
+
+ORDER BY clause
+Display the viewers with the same seat type(G)
+Select v.f_name , v.l_name , m.ticket_type from viewer v join movie_ticket m on v.viewer_id = m.viewer_id where m.ticket_type = ‘G’ order by v.f_name;
+
+Write a query in SQL to find all movie names produced and that received a rating of more than 3 stars. Show the results in increasing order.
+Select DISTINCT movie_name “NAME”, rating “RATING” from movie where rating >’3’ order by rating;
+
+Uncorrelated NESTED query
+Retrieve the record of the user whose amount is maximum.
+Select * from viewer join payment on viewer.viewer_id = payment.viewer_id where amount = max(amount) from payment;
+
+Correlated NESTED query
+Retrieve the record of the user where the payment type is CARD
+select v.f_name , v.l_name , v.viewer_id from viewer v where viewer_id in( select p.viewer_id from payment p where p.viewer_id = v.viewer_id and
+p.payment_type = 'CARD');
+
+SET OPERATORS
+Union
+Print all the movie_ticket id in the database.
+Select distinct(ticket_id) from movie_ticket union all select(ticket_id) from payment.
+
+In
+Retrieve viewer details who have normal type seat booking.
+Select * from viewer where viewer_id in (select viewer_id from movie_ticket where ticket_type like(‘%N%’));
+
+Minus
+Find the viewer_id for which reservations have not yet been made.
+Select viewer_id “ID” from viewer minus select viewer_id from movie_ticket;
+
+GROUP BY, HAVING and WHERE clause 
+Write a query in SQL to find movie title and each movie that has at least one rating and that movie received and sort the result by movie title.
+Select movie_name , max(rating) from movie group by movie_name having max(rating)>0 order by movie_name asc;
+
+WHERE clause
+
+Retrieve the records of the the viewers who go the same to the same theatre(PVR)
+Select v.f_name,t.theatre_name,t.theatre_address from viewer v, theatre t, movie_ticket m where v.viewer_id=m.viewer_id and t.theatre_id=m.theatre_id and m.theatre_id=’T001’;
+
+Natural join
+
+Display the showtime of a particular movie
+Select * from showtime natural join movie where movie_name = ‘Sadak2’;
+
+(left or right or full) outer JOIN
+
+Display seats available along with screen no
+Select screening.screen_no , seat.seat_no from screening full outer join seat on screening.screen_id = seat.screen_id order by Screening.screen_no; 
+
+Display viewer_id , ticket_id,screen_id and show_id
+Select t.viewer_id, t.ticket_id, t.screen_id, s.show_id from movie_ticket t inner join screening s on s.screen_id = t.screen_id;
+
+Display user name along with movie_ticket details
+Select v.f_name, th.theatre_name, m.movie_name, t.ticket_count, t.ticket_type from movie_ticket t join viewer v or v.viewer_id = t.viewer_id join theatre th on t.theatre = th. theatre_id join showtime s on s.show_id = t.show_id join movie m on m.movie_id = s.movie_id
