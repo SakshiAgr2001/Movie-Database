@@ -1,0 +1,56 @@
+PL/SQL function
+
+Write a PL/SQL function to get the ticket_id and return the total amount.
+
+create or replace function display_tkt_detail(tid payment.ticket_id%type)
+return number is fare payment.amount%type;
+is cursor s1 is select s.show_id , s.movie_stime , s.movie_endtime
+, m.movie_name from showtime s , movie m where s.show_id = sid and
+ m.movie_id = s.movie_id;
+S_rec s1%rowtype;
+Begin
+open s1;
+loop
+fetch s1 into S_rec;
+exit when s1%notfound;
+begin 
+Select amount into fare from payment where ticket_id = tid; 
+return fare;
+end; 
+declare
+tid varchar(20);
+begin
+tid :=  display_tkt_detail('T2');
+dbms_output.put_line('Total Amount :  ' || tid);
+End;
+/
+
+Create a function to input show id and print respective show
+
+create or replace function Print(
+sid showtime.show_id%type)
+return varchar2 
+is cursor s1 is select s.show_id , s.movie_stime , s.movie_endtime
+, m.movie_name from showtime s , movie m where s.show_id = sid and
+ m.movie_id = s.movie_id;
+S_rec s1%rowtype;
+Begin
+open s1;
+loop
+fetch s1 into S_rec;
+exit when s1%notfound;
+dbms_output.put_line('MOVIE NAME FOR '||sid ||' is '|| S_rec.movie_name || ' MOVIE START TIME IS : ' || S_rec.movie_stime 
+|| ' MOVIE END TIME IS : ' || S_rec.movie_endtime);
+end loop;
+close s1;
+return movie_name;
+End;
+/
+declare
+sid varchar(20);
+begin
+sid := Print('Sh1');
+dbms_output.put_line(sid);
+End;
+/
+
