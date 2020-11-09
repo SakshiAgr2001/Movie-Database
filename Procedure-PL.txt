@@ -1,0 +1,50 @@
+PL/SQL procedure 
+
+To create a procedure that displays all the films and their director running in a cinema,whose id is given as a parameter by the user. 
+
+ create or replace procedure movie_details(mid in movie.movie_id%type)
+ Is  mname movie.movie_name%type; md movie.director%type; mt movie.genre%type;
+ cursor m1 is select movie_name,director,genre into mname,md,mt from movie   
+ where movie_id = mid;
+ Begin
+ open m1;
+ loop
+ fetch m1 into mname,md,mt;
+ exit when m1%notfound;
+ dbms_output.put_line('The movie ' || mname || ' is directed by ' || md || '. The Genre  
+ of the film is ' || mt);
+ end loop;
+ close m1;
+ end;
+ /
+begin
+movie_details('Mov1');
+end;
+/
+
+Create a procedure to display the viewer name , seat no , theatre name and movie name
+
+create or replace procedure print_seat
+(vid in movie_ticket.viewer_id%type)
+is
+V_name viewer.f_name%type; 
+Sno movie_ticket.seat_number%type;
+tname theatre.theatre_name%type;
+mname movie.movie_name%type;
+cursor s1 is select v.f_name , m.seat_number , t.theatre_name , mo.movie_name from 
+viewer v , movie_ticket m , movie mo , theatre t , showtime s where
+v.viewer_id = vid and m.viewer_id = vid and t.theatre_id = m.theatre_id and s.show_id = m.show_id and s.movie_id = mo.movie_id;
+begin
+open s1;
+loop
+fetch s1 into V_name, Sno,tname,mname;
+exit when s1%notfound;
+dbms_output.put_line('TICKET DETAILS : name : '|| V_name || ' Seat no : ' || Sno || ' Theatre no : ' || tname || ' Movie name : ' || mname);
+end loop;
+close s1;
+end;
+/
+begin
+print_seat('View2');
+end;
+/
